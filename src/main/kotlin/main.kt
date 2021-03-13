@@ -2,6 +2,10 @@ import banco.pedido.Pedido
 
 fun main() {
 
+    executaFuncoes()
+}
+
+fun executaFuncoes() {
     testaTipoFuncaoReferencia()
     testaTipoFuncaoClasse()
     testeFuncaoLambida()
@@ -9,6 +13,7 @@ fun main() {
     println(minhaFuncaoAnonima)
     testaTipoFuncaoClasseSoma()
     somaReferencia()
+    calculaBonificacaoFun()
 }
 
 fun testeFuncaoLambida() {
@@ -64,6 +69,16 @@ fun teste(){
 fun somaReferencia(){
     val minhaFuncao: (Int, Int) -> Int = ::soma
     println(minhaFuncao(5,10))
+}
+fun calculaBonificacaoFun(){  //retorno multiplo
+    var calculaBonificacao: (salario: Double) -> Double = lambida@ { salario ->
+        if(salario > 1000){
+            return@lambida salario + 50
+        }
+            return@lambida salario + 100
+
+    }
+    println(calculaBonificacao(1000.0))
 }
 
 class Teste : () -> Unit{
