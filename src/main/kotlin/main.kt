@@ -1,98 +1,52 @@
+import Alura.Funcionario.Autenticavel
+import Alura.cliente.Endereco
+import Alura.sistema.SistemaInterno
+import banco.funcoes.Soma
+import banco.funcoes.Teste
 import banco.pedido.Pedido
 
 fun main() {
 
-    executaFuncoes()
-}
-
-fun executaFuncoes() {
-    testaTipoFuncaoReferencia()
-    testaTipoFuncaoClasse()
-    testeFuncaoLambida()
-    testeFuncaoLambidaRetorno()
-    println(minhaFuncaoAnonima)
-    testaTipoFuncaoClasseSoma()
-    somaReferencia()
-    calculaBonificacaoFun()
-}
-
-fun testeFuncaoLambida() {
-    val minhaFuncaoLambida: () -> Unit = {
-        println("executa como lambida")
-    }
-    println(minhaFuncaoLambida)
-    println(minhaFuncaoLambida())
-}
-
-fun testeFuncaoLambidaRetorno() {
-    val minhaFuncaoLambida: (Int, Int, Int) -> Int = { a, b, _ ->
-        println("funcao Labida que retorna")
-        a + b
-    }
-    println(minhaFuncaoLambida)
-    println(minhaFuncaoLambida(20, 40, 1))
-    println(minhaFuncaoAnonimaRetorno(49,20,10))
-}
-
-val minhaFuncaoAnonima: () -> Unit =fun (){  // funcao anonima
-    println("executa como anonima")
-}
-val minhaFuncaoAnonimaRetorno: (Int, Int, Int) -> Int =fun (a: Int, b: Int, _: Int): Int{  // funcao anonima
-    println("executa como anonima Retorno")
-    return a + b
-}
-
-
-fun testaTipoFuncaoClasse() {
-    val minhaFuncaoClasses: () -> Unit = Teste()
-    println(minhaFuncaoClasses) //instancia de teste
-    println(minhaFuncaoClasses()) // () executar
-}
-
-fun testaTipoFuncaoClasseSoma() {
-    val minhaFuncaoClassesSoma: (Int, Int) -> Int = Soma()
-    println(minhaFuncaoClassesSoma) //instancia de teste
-    println(minhaFuncaoClassesSoma(5,10)) // () executar
-}
-
-fun testaTipoFuncaoReferencia() {
-    val minhaFuncao: () -> Unit = ::teste //referencia de uma fucao
-
-    println(soma(43, 61))
-    println(minhaFuncao())
-}
-
-fun soma(a: Int, b: Int) : Int = a + b
-fun teste(){
-    println("executa teste")
-}
-fun somaReferencia(){
-    val minhaFuncao: (Int, Int) -> Int = ::soma
-    println(minhaFuncao(5,10))
-}
-fun calculaBonificacaoFun(){  //retorno multiplo
-    var calculaBonificacao: (salario: Double) -> Double = lambida@ { salario ->
-        if(salario > 1000){
-            return@lambida salario + 50
+    Endereco(logadouro = "rua Alto horizonte", 1080)
+        .let { endereco ->
+            "${endereco.logadouro}, ${endereco.numero}".toUpperCase()
+        }.let {
+            println(it)
         }
-            return@lambida salario + 100
 
+    val EnderecosComComplemento = listOf(
+        Endereco(complemento = "casa"),
+        Endereco(),
+        Endereco(complemento = "apartamento"))
+        .filter { endereco -> endereco.complemento.isNotEmpty() } // condicao nao esta vazio  predicade={bla}
+        .let(block = (::println))
+    //println(soma(3,7)) erro
+    soma(3, 7){
+        println(it)
     }
-    println(calculaBonificacao(1000.0))
+    soma(5, 8, resultado = (::println))
+
+    val autenticavel = object : Autenticavel {
+        val senha = "1234"
+        override fun autentica(senha: String): Boolean = this.senha == senha
+    }
+    SistemaInterno().entra(autenticavel, autenticavel.senha){
+        println("realizar pagamento")
+    }
+    SistemaInterno().entra(autenticavel, autenticavel.senha, autenticado = {
+        println("realizar pagamento2")
+    })
+}
+fun soma (a: Int, b: Int, resultado: (Int) -> Unit){
+    println("soma sendo efetuada")
+    resultado
+    resultado(a + b)
+    println("depois da soma")
+
 }
 
-class Teste : () -> Unit{
-    override fun invoke() {
-        println("executa invoke do teste")
-    }
 
-}
-class Soma : (Int, Int) -> Int {
-    override fun invoke(p1: Int, p2: Int): Int {
-       return  p1 + p2
-    }
 
-}
 
 
 
