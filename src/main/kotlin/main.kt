@@ -7,9 +7,30 @@ import banco.pedido.Pedido
 
 fun main() {
 
+
+
     Endereco(logadouro = "rua Alto horizonte", 1080)
         .let { endereco ->
             "${endereco.logadouro}, ${endereco.numero}".toUpperCase()
+        }.let {
+            println(it)
+        }
+
+    val endereco1 = Endereco()
+        .also { println("Criando Endereco") }
+        .apply {
+            logadouro = "rua Alto horizonte, juca arandes dos sonhos 2" //tem que ser um em cada linha
+            numero= 10221809
+        }
+    with(endereco1){
+        "with $logadouro, $numero".toUpperCase()
+    }.let { endMiusculo : String ->
+        println(endMiusculo)
+    }
+
+    Endereco(logadouro = "rua Alto horizonte, morada dos sonhos 2", 10809)
+        .apply {
+            " upercase ${logadouro}, ${numero} ??".toUpperCase() // nao foi devolvido mas sim o objeto de contexto Endereco()
         }.let {
             println(it)
         }
