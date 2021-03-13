@@ -25,4 +25,12 @@ class Endereco (
     override fun hashCode(): Int {
         return cep.hashCode()
     }
+
+    fun completo(): String {
+        return """
+        
+            $logadouro - $numero, $bairro, $complemento
+            $estado, $cep
+        """.trimIndent()
+    }
 }
